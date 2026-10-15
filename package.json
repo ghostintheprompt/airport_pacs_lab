@@ -4,7 +4,7 @@
   "private": true,
   "description": "Reproducible lab for airport physical-access-control-system (PACS) vulnerability classes: zone-authorization bypass and badge-token replay.",
   "scripts": {
-    "test": "node cases/01-zone-authorization-bypass/test.js && node cases/02-replay-missing-nonce/test.js"
+    "test": "node cases/01-zone-authorization-bypass/test.js && node cases/02-replay-missing-nonce/test.js && node cases/03-anti-passback/test.js"
   },
   "dependencies": {
     "express": "^4.21.0"

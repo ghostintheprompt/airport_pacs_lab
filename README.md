@@ -38,6 +38,20 @@ badge, no real airport.
   present at all. Fixed version consumes the token on first use and
   enforces a freshness window — the two properties a real rolling-code
   scheme provides that a bare static credential doesn't.
+- [`03-anti-passback`](./cases/03-anti-passback/) — built differently from
+  the first two: a straight, undecided-in-advance multi-zone anti-passback
+  implementation, then actually explored (`explore.js`) rather than
+  audited line by line. The sequential case works fine — re-entry at the
+  same door without an exit is correctly rejected. What `explore.js`
+  actually found: fire the *same* transit request concurrently (modeling
+  a shared or cloned badge presented at once, against the async
+  controller-round-trip delay a real system has) and every copy reads the
+  same stale "current zone" before any of them commits — 5 of 5
+  concurrent presentations succeeded live. Fixed version reserves the
+  badge's transit state synchronously, before the round-trip, so a second
+  concurrent presentation is rejected outright instead of racing: 5 of 5
+  becomes exactly 1 of 5, confirmed live, with ordinary sequential
+  multi-door passage unaffected.
 
 ## Running it
 
@@ -53,7 +67,7 @@ docker compose build
 docker compose run --rm lab
 ```
 
-Both run identically — confirmed live, 9/9 passing either way.
+Both run identically — confirmed live, 13/13 passing either way.
 
 ## Standing rules for every case added here
 
@@ -82,6 +96,7 @@ story that argues for publishing it for free in the meantime.
 - A badge-cloning-adjacent case modeling what changes once a credential
   format carries a signed/encrypted payload instead of a bare ID (the
   actual fix path real PACS vendors have been migrating toward).
-- A multi-door/anti-passback sequencing case: using a badge to enter a
-  zone without ever exiting it, then re-entering, the way a real
-  anti-passback violation gets caught (or doesn't).
+- Extend `03-anti-passback`'s race to a mixed-badge scenario: two
+  *different* badges both authorized for overlapping zones, racing
+  through the same door, to see whether the lock is scoped correctly
+  or only happens to work because today's scenarios reuse one badge.
