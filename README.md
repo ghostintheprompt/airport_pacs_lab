@@ -16,7 +16,7 @@ worst case is physical: a flaw here isn't a free ride, it's a person
 reaching a ramp, a sterile area, or a tarmac they were never cleared for.
 Same discipline as the transit work, higher stakes.
 
-Both cases below model real, long-public vulnerability classes in badge
+The cases below model real, long-public vulnerability classes in badge
 access systems — not anything novel. Anti-passback/zone-authorization
 bypass and badge-signal replay (the Wiegand-protocol cleartext/no-rolling-
 code problem) have been documented and talked about at DEF CON and
